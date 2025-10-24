@@ -1,6 +1,22 @@
+# services:
+#   - type: web
+#     name: aims-api
+#     env: python
+#     buildCommand: pip install -r requirements.txt
+#     startCommand: gunicorn api:app
+
 services:
   - type: web
-    name: aims-api
+    name: aims-db-api
     env: python
     buildCommand: pip install -r requirements.txt
-    startCommand: gunicorn api:app
+    startCommand: gunicorn app:app --workers 2 --threads 2 --timeout 60
+    plan: free
+    pythonVersion: "3.13"
+    envVars:
+      - key: FLASK_ENV
+        value: production
+      - key: PORT
+        value: 10000
+      - key: RENDER_EXTERNAL_URL
+        value: https://aims-api-hqxa.onrender.com  # Replace with your actual Render URL
